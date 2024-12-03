@@ -1,0 +1,20 @@
+# "бульвар" и "прохожий"
+
+from gensim.models import KeyedVectors
+
+positive_words = ["улица_NOUN", "пешеход_NOUN", "проспект_NOUN", "сквер_NOUN"]
+negative_words = ["набережная_NOUN"]
+
+
+vector_model = KeyedVectors.load_word2vec_format("cbow.txt", binary=False)
+
+similar_words = vector_model.most_similar(positive=positive_words, negative=negative_words)
+
+i = 1
+print(f"{'№':<4} {'Word':<20} {'Weight':<10} {'Match':<10}")
+print("-" * 50)
+
+for word, similarity_score in similar_words:
+    highlight = "[Match]" if word in {"бульвар_NOUN", "прохожий_NOUN"} else ""
+    print(f"{i:<4} {word:<20} {similarity_score:<10.4f} {highlight:<10}")
+    i += 1
